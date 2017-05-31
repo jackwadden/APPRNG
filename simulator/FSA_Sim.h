@@ -52,6 +52,7 @@ public:
                     uint32_t sd, 
                     uint32_t permThresh,
                     uint32_t permWidth,
+                    int symbolStride,
                     const char * outfn, 
                     const char *  transfn);
     ~FiniteStatePRNG();
@@ -68,9 +69,11 @@ private:
     int rotateBy;
     int rotateCount;
     int * permutation;
-    int permutationThresh;
+    uint32_t permutationThresh;
     int permutations;
-    int permutationWidth;
+    uint32_t permutationWidth;
+
+    int fixedSymbolStride;
 
     int seed;
     CBRNG::ctr_type ctr;

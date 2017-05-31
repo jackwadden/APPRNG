@@ -8,9 +8,10 @@ using namespace std;
 FiniteStatePRNG::FiniteStatePRNG(int machines,
                                  int sts,
                                  int reconT,
+                                 uint32_t sd,                    
                                  uint32_t permThresh,
                                  uint32_t permWidth,
-                                 uint32_t sd,
+                                 int symbolStride,
                                  const char * outfn,
                                  const char * transfn)
     : stage()
@@ -57,6 +58,9 @@ FiniteStatePRNG::FiniteStatePRNG(int machines,
     for(int i = 0; i < numMachines; i++)
         permutation[i] = i;
     
+    // check to see if we've enabled fixed symbol injection
+    // -1 disables this feature
+    fixedSymbolStride = symbolStride;
     
     // create transitions
     createTransitions();
@@ -423,7 +427,20 @@ void FiniteStatePRNG::stepPermute()
 
     unsigned int logStates = (unsigned int)log2(numStates);
     
-    uint32_t symbol = CPURandomInt(NUM_SYMBOLS); // acquire random input
+    // 
+    uint32_t symbol = 0;
+
+    // if we've disabled fixed symbol striding
+    if(fixedSymbolStride < 0){
+        // acquire random input
+        symbol = CPURandomInt(NUM_SYMBOLS); 
+    } else {
+        // if we have a strided symbol, check to see if we've reached the stride
+        if(steps % fixedSymbolStride != 0)
+            // if not, acquire random input
+            symbol = CPURandomInt(NUM_SYMBOLS); 
+    }
+
     int machine = 0;
     int machine_tmp = 0;
     for(machine_tmp = 0; machine_tmp < numMachines; machine_tmp++) {

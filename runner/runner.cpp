@@ -23,12 +23,12 @@ uint32_t rnd_function()
  
 void usage() {
 
-    cout << "USAGE: <machines> <states> <reconThresh> <permthresh> <permwidth> <seed> <crushtype 1|2|3> <outfile> <tablefile>" << endl;
+    cout << "USAGE: <machines> <states> <reconThresh> <permthresh> <permwidth> <seed> <crushtype 1|2|3> <fixedSymbolStride (-1 to disable)>" << endl;
 }
 
 int main (int argc, char * argv[])
 {
-    if(argc != 10) {
+    if(argc != 9) {
         usage();
         exit(1);
     }
@@ -40,15 +40,19 @@ int main (int argc, char * argv[])
     int permWidth = stoi(argv[5]);
     int seed = stoi(argv[6]);
     int crushtype = stoi(argv[7]);
-    char * outfile = argv[8];
-    char * tablefile = argv[9];
-    
+    int symbolStride = stoi(argv[8]);
+    //char * outfile = argv[8];
+    //char * tablefile = argv[9];
+    char * outfile = "out.txt";
+    char * tablefile = "table.txt";
+
     engine = new FiniteStatePRNG(machines,
                                  states,
                                  reconThresh,
+                                 seed,
                                  permThresh,
                                  permWidth,
-                                 seed,
+                                 symbolStride,
                                  outfile,
                                  tablefile);
         
