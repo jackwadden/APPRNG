@@ -23,7 +23,7 @@ uint32_t rnd_function()
  
 void usage() {
 
-    cout << "USAGE: <machines> <states> <reconThresh> <permthresh> <permwidth> <seed> <crushtype> <outfile> <tablefile>" << endl;
+    cout << "USAGE: <machines> <states> <reconThresh> <permthresh> <permwidth> <seed> <crushtype 1|2|3> <outfile> <tablefile>" << endl;
 }
 
 int main (int argc, char * argv[])
