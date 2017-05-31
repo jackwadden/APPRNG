@@ -5,9 +5,13 @@
 TestU01 must first be compiled into a dynamically linkable library before the AP PRNG simulator can be run against the tests. Follow the steps below to compile TestU01.
 
 `cd stats_tests/TestU01-1.2.3`
+
 `mkdir build`
+
 `./configure --prefix=<absolute path to build dir>`
+
 `make`
+
 `make install`
 
 Once TestU01 is built, you must add APPRNG/stats_tests/TestU01-1.2.3/build/lib to your LD_LIBRARY_PATH
