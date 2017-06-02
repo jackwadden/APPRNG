@@ -11,7 +11,7 @@
 
 #include "Random123/philox.h"
 
-#define NUM_SYMBOLS 256
+#define NUM_SYMBOLS 65536
 typedef r123::Philox4x32_R<10> CBRNG;
 
 using namespace std;
@@ -74,7 +74,8 @@ private:
     uint32_t permutationWidth;
 
     int fixedSymbolStride;
-
+    int stepsSinceLastStride;
+    
     int seed;
     CBRNG::ctr_type ctr;
     CBRNG::key_type key; 

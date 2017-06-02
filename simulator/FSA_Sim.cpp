@@ -61,6 +61,7 @@ FiniteStatePRNG::FiniteStatePRNG(int machines,
     // check to see if we've enabled fixed symbol injection
     // -1 disables this feature
     fixedSymbolStride = symbolStride;
+    stepsSinceLastStride = 0;
     
     // create transitions
     createTransitions();
@@ -426,6 +427,7 @@ void FiniteStatePRNG::stepPermute()
 {
 
     unsigned int logStates = (unsigned int)log2(numStates);
+    unsigned int symbolBits = (unsigned int)log2(NUM_SYMBOLS);
     
     // 
     uint32_t symbol = 0;
@@ -435,10 +437,18 @@ void FiniteStatePRNG::stepPermute()
         // acquire random input
         symbol = CPURandomInt(NUM_SYMBOLS); 
     } else {
+
+        symbol = CPURandomInt(NUM_SYMBOLS);
+
         // if we have a strided symbol, check to see if we've reached the stride
-        if(steps % fixedSymbolStride != 0)
-            // if not, acquire random input
-            symbol = CPURandomInt(NUM_SYMBOLS); 
+        if((stepsSinceLastStride * symbolBits) >= (fixedSymbolStride * 8)){
+            // if we have, shift 8 zeros to the appropriate offset 
+            // first get how many bits to shift 8 zeros in by
+            unsigned int offset = (stepsSinceLastStride * symbolBits) % (fixedSymbolStride * 8);
+            // generate 11111...00000....11111 mask
+            unsigned int mask = (0xFFFFFFFF & ~(255 << offset));
+            symbol &= mask;
+        }
     }
 
     int machine = 0;
