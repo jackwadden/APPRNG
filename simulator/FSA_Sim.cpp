@@ -61,7 +61,10 @@ FiniteStatePRNG::FiniteStatePRNG(int machines,
     // check to see if we've enabled fixed symbol injection
     // -1 disables this feature
     fixedSymbolStride = symbolStride;
-    stepsSinceLastStride = 0;
+    symbolStrideCounter = 0;
+    randomByteCounter = 0;
+    holderRandomInt = CPURandomInt();
+    
     
     // create transitions
     createTransitions();
@@ -144,28 +147,123 @@ void FiniteStatePRNG::transitionsToFile(){
     fclose(f);
 }
 
+
+/*
+ * Returns the input symbol with bits SYMBOL_BITS
+ * keeps track of how many symbols have been requested
+ * allows arbitrary insertion of constant symbols in input stream
+ */
+unsigned int FiniteStatePRNG::APGetNextSymbol()
+{
+
+    unsigned int symbol;
+
+    // if we need to insert a constant
+    if(fixedSymbolStride >= 0 && symbolStrideCounter == fixedSymbolStride){
+
+        // insert constant
+        symbol = 0;
+        
+        // reset counter
+        symbolStrideCounter = 0;
+
+    }else{
+
+        // insert random bits
+        symbol = CPURandomBits(SYMBOL_BITS);
+        //symbol = CPURandomInt(NUM_SYMBOLS);
+
+        // 
+        symbolStrideCounter++;
+    }
+
+    return symbol;
+}
+
+/*
+ * Returns the input symbol with bits SYMBOL_BITS * STRIDE
+ */
+unsigned int FiniteStatePRNG::APGetNextStridedSymbol()
+{
+
+    
+    if(SYMBOL_BITS > 32){
+        printf("Currently we don't support symbol widths over 32 bits!\n");
+        exit(1);
+    }
+    
+    unsigned int symbol = 0;
+
+    for(int i = 0; i < STRIDE; i++){
+
+        symbol = symbol << SYMBOL_BITS;
+
+        symbol = symbol & APGetNextSymbol();
+    }
+
+    return symbol;
+}
+
+/*
+ *
+ */
+unsigned char FiniteStatePRNG::CPURandomByte()
+{
+
+
+    unsigned char retval;
+    /*
+    retval = (unsigned char)((holderRandomInt >> (randomByteCounter * 8)) & 0xFF);
+    
+    randomByteCounter++;
+    
+    // get new random int if we've exhausted random bytes
+    if(randomByteCounter == 4){
+        randomByteCounter = 0;
+        holderRandomInt = CPURandomInt();
+    }
+    */
+    
+    return CPURandomInt() & 0xFF;;
+}
+
+/*
+ *
+ *
+ */
 unsigned int FiniteStatePRNG::CPURandomInt(unsigned int max) {
 
-    // Mersenne Twister
-    //int value = (CPURandomSource_MT() % max);
-    
-    // Philox 
-    ctr[0] += 1;
-    if(ctr[0] > UINT32_MAX - 10) {
-        ctr[1] += 1;
-        ctr[0] = 0;
-    }
-
-    if(ctr[0] > UINT32_MAX - 10) {
-        ctr[1] = 0;
-    }
-        
-    CBRNG::ctr_type rand = CPURandomSource_PX(ctr, key);
-    uint32_t value = rand[0];
+    uint32_t value = CPURandomInt();
     
     return (value % max);
 }
 
+/*
+ *
+ *
+ */
+unsigned int FiniteStatePRNG::CPURandomBits(unsigned int numBits) {
+
+    uint32_t value;
+    if(numBits > 8) {
+        value = CPURandomInt();
+    }else{
+        value = CPURandomByte();
+    }
+
+    //uint32_t uselessBits = (32 - numBits);
+    
+    //value = value << uselessBits;
+    //value = value >> uselessBits;
+    
+    return value;
+}
+
+
+/*
+ *
+ *
+ */
 unsigned int FiniteStatePRNG::CPURandomInt() {
 
     // Mersenne Twister
@@ -427,30 +525,13 @@ void FiniteStatePRNG::stepPermute()
 {
 
     unsigned int logStates = (unsigned int)log2(numStates);
-    unsigned int symbolBits = (unsigned int)log2(NUM_SYMBOLS);
     
     // 
     uint32_t symbol = 0;
 
-    // if we've disabled fixed symbol striding
-    if(fixedSymbolStride < 0){
-        // acquire random input
-        symbol = CPURandomInt(NUM_SYMBOLS); 
-    } else {
-
-        symbol = CPURandomInt(NUM_SYMBOLS);
-
-        // if we have a strided symbol, check to see if we've reached the stride
-        if((stepsSinceLastStride * symbolBits) >= (fixedSymbolStride * 8)){
-            // if we have, shift 8 zeros to the appropriate offset 
-            // first get how many bits to shift 8 zeros in by
-            unsigned int offset = (stepsSinceLastStride * symbolBits) % (fixedSymbolStride * 8);
-            // generate 11111...00000....11111 mask
-            unsigned int mask = (0xFFFFFFFF & ~(255 << offset));
-            symbol &= mask;
-        }
-    }
-
+    symbol = APGetNextSymbol();
+    //symbol = CPURandomInt(NUM_SYMBOLS);
+    
     int machine = 0;
     int machine_tmp = 0;
     for(machine_tmp = 0; machine_tmp < numMachines; machine_tmp++) {
@@ -735,3 +816,10 @@ void FiniteStatePRNG::printStage() {
         stage.pop();
     }
 }
+
+/*
+int main(){
+
+    printf("HELLO WORLD!\n");
+}
+*/

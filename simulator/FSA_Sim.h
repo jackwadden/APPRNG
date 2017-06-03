@@ -11,7 +11,9 @@
 
 #include "Random123/philox.h"
 
-#define NUM_SYMBOLS 65536
+#define NUM_SYMBOLS 256
+#define SYMBOL_BITS 8
+#define STRIDE 1
 typedef r123::Philox4x32_R<10> CBRNG;
 
 using namespace std;
@@ -24,9 +26,13 @@ public:
     void byteArrayToFile();
     void transitionsToFile();
     uint32_t CPURandomInt(uint32_t max);
+    uint32_t CPURandomBits(uint32_t numBits);
     uint32_t CPURandomInt();
+    unsigned char CPURandomByte();
     double CPURandomDouble();
     uint32_t APRandomInt();
+    uint32_t APGetNextStridedSymbol();
+    uint32_t APGetNextSymbol();
     uint32_t APRandomIntFair();
     uint64_t APRandomLong();
     double APRandomDouble();
@@ -74,7 +80,9 @@ private:
     uint32_t permutationWidth;
 
     int fixedSymbolStride;
-    int stepsSinceLastStride;
+    int symbolStrideCounter;
+    unsigned int holderRandomInt;
+    unsigned int randomByteCounter;
     
     int seed;
     CBRNG::ctr_type ctr;
