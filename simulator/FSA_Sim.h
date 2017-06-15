@@ -11,9 +11,9 @@
 
 #include "Random123/philox.h"
 
-#define NUM_SYMBOLS 256
-#define SYMBOL_BITS 8
-#define STRIDE 1
+//#define NUM_SYMBOLS 256 // number of symbols in the alphabet (MUST BE 2^(SYMBOL_BITS * STRIDE))
+//#define SYMBOL_BITS 8 // bit width of each individual symbol
+//#define STRIDE 1 // symbols considered per transition
 typedef r123::Philox4x32_R<10> CBRNG;
 
 using namespace std;
@@ -58,12 +58,16 @@ public:
                     uint32_t sd, 
                     uint32_t permThresh,
                     uint32_t permWidth,
-                    int symbolStride,
+                    uint32_t stride,
+                    uint32_t bitsPerSymbol,
+                    int fixedSymbolStride,
                     const char * outfn, 
                     const char *  transfn);
     ~FiniteStatePRNG();
 
 private:
+    //
+    uint32_t NUM_SYMBOLS;
     int numMachines;
     int numStates;
     int reconThresh;
@@ -79,6 +83,11 @@ private:
     int permutations;
     uint32_t permutationWidth;
 
+    // Variables added to support strided computation
+    uint32_t stride;
+    uint32_t bitsPerSymbol;
+    
+    // Variables added to support byte striding
     int fixedSymbolStride;
     int symbolStrideCounter;
     unsigned int holderRandomInt;

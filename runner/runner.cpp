@@ -38,9 +38,12 @@ int main (int argc, char * argv[])
     int reconThresh = stoi(argv[3]);
     int permThresh = stoi(argv[4]);
     int permWidth = stoi(argv[5]);
+    uint32_t stride = 2;
+    uint32_t bitsPerSymbol = 4;
+
     int seed = stoi(argv[6]);
     int crushtype = stoi(argv[7]);
-    int symbolStride = stoi(argv[8]);
+    int fixedSymbolStride = stoi(argv[8]);
     //char * outfile = argv[8];
     //char * tablefile = argv[9];
     char * outfile = "out.txt";
@@ -52,7 +55,9 @@ int main (int argc, char * argv[])
                                  seed,
                                  permThresh,
                                  permWidth,
-                                 symbolStride,
+                                 stride,
+                                 bitsPerSymbol,
+                                 fixedSymbolStride,
                                  outfile,
                                  tablefile);
         

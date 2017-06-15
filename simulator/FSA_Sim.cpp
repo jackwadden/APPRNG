@@ -11,18 +11,30 @@ FiniteStatePRNG::FiniteStatePRNG(int machines,
                                  uint32_t sd,                    
                                  uint32_t permThresh,
                                  uint32_t permWidth,
-                                 int symbolStride,
+                                 uint32_t stride_param,
+                                 uint32_t bitsPerSymbol_param,
+                                 int fixedSymbolStride_param,
                                  const char * outfn,
                                  const char * transfn)
     : stage()
 {
+    // Assign general config params
     numMachines = machines;
     numStates = sts;
     reconThresh = reconT;
     steps = 0;
     deck = 0;
     bitsInDeck = 0;
+    
+    // Initialize striding params
+    stride = stride_param;
+    bitsPerSymbol = bitsPerSymbol_param;
 
+    // Calculate total symbols in alphabet 2^(stride * bitsPerSymbol)
+    NUM_SYMBOLS = (1 << (stride * bitsPerSymbol));
+    //cout << NUM_SYMBOLS << endl;
+    
+    // Get output file name params
     outputsFileName = outfn;
     transitionsFileName = transfn;
 
@@ -60,7 +72,7 @@ FiniteStatePRNG::FiniteStatePRNG(int machines,
     
     // check to see if we've enabled fixed symbol injection
     // -1 disables this feature
-    fixedSymbolStride = symbolStride;
+    fixedSymbolStride = fixedSymbolStride_param;
     symbolStrideCounter = 0;
     randomByteCounter = 0;
     holderRandomInt = CPURandomInt();
@@ -68,7 +80,7 @@ FiniteStatePRNG::FiniteStatePRNG(int machines,
     
     // create transitions
     createTransitions();
-    createTransitions2();
+    //createTransitions2();
 }
 
 FiniteStatePRNG::~FiniteStatePRNG() 
@@ -102,7 +114,7 @@ double FiniteStatePRNG::uniformLongToDouble(uint64_t data) {
  */
 int FiniteStatePRNG::flatIndex(int x, int y, int z, int x_size, int y_size){
 
-    return (x_size * y_size) * z + x_size * y + x;
+    return ((x_size * y_size) * z) + x_size * y + x;
 
 }
 
@@ -170,8 +182,7 @@ unsigned int FiniteStatePRNG::APGetNextSymbol()
     }else{
 
         // insert random bits
-        symbol = CPURandomBits(SYMBOL_BITS);
-        //symbol = CPURandomInt(NUM_SYMBOLS);
+        symbol = CPURandomBits(bitsPerSymbol);
 
         // 
         symbolStrideCounter++;
@@ -187,18 +198,18 @@ unsigned int FiniteStatePRNG::APGetNextStridedSymbol()
 {
 
     
-    if(SYMBOL_BITS > 32){
+    if(bitsPerSymbol > 32){
         printf("Currently we don't support symbol widths over 32 bits!\n");
         exit(1);
     }
     
-    unsigned int symbol = 0;
+    uint32_t symbol = 0;
 
-    for(int i = 0; i < STRIDE; i++){
+    for(int i = 0; i < stride; i++){
 
-        symbol = symbol << SYMBOL_BITS;
+        symbol = symbol << bitsPerSymbol;
 
-        symbol = symbol & APGetNextSymbol();
+        symbol = symbol | APGetNextSymbol();
     }
 
     return symbol;
@@ -244,17 +255,12 @@ unsigned int FiniteStatePRNG::CPURandomInt(unsigned int max) {
  */
 unsigned int FiniteStatePRNG::CPURandomBits(unsigned int numBits) {
 
-    uint32_t value;
-    if(numBits > 8) {
-        value = CPURandomInt();
-    }else{
-        value = CPURandomByte();
-    }
+    unsigned int value;
+    value = CPURandomInt();
+    uint32_t uselessBits = (32 - numBits);
 
-    //uint32_t uselessBits = (32 - numBits);
-    
-    //value = value << uselessBits;
-    //value = value >> uselessBits;
+    // mask off useless bits, shifting in 0's
+    value = value >> uselessBits;
     
     return value;
 }
@@ -394,9 +400,10 @@ void FiniteStatePRNG::createTransitions()
     // The number of transitions is the number of states (rows) times the number
     // of input characters (columns fixed at NUM_SYMBOLS).
     
-    if(transitions == NULL)
+    if(transitions == NULL){
+        //cout << "TRANSITION FLAT SIZE: " << numMachines * numStates * NUM_SYMBOLS << endl;
         transitions = new uint32_t[numMachines * numStates * NUM_SYMBOLS];
-    
+    }
     // For each state row, fill the columns with an equal number of transitions
     // to each possible state
     // NOTE: how i've implemented this requires that the number of states 
@@ -479,7 +486,6 @@ void FiniteStatePRNG::step()
         //printf("input: %d\n", input);
         //printf("machine: %d\n", machine);
         //printf("state: %d\n", state);
-        
         state = transitions[flatIndex(state, symbol, machine, numStates, NUM_SYMBOLS)];
         
         //printf("next state: %d\n", state);
@@ -529,7 +535,8 @@ void FiniteStatePRNG::stepPermute()
     // 
     uint32_t symbol = 0;
 
-    symbol = APGetNextSymbol();
+    symbol = APGetNextStridedSymbol();
+    //symbol = APGetNextSymbol();
     //symbol = CPURandomInt(NUM_SYMBOLS);
     
     int machine = 0;
@@ -540,11 +547,11 @@ void FiniteStatePRNG::stepPermute()
         //   level of indirection based on permutation array
         machine = permutation[machine_tmp];
         uint32_t state = states[machine];
-        
-        //printf("input: %d\n", input);
+
+        //printf("symbol: %d\n", symbol);
         //printf("machine: %d\n", machine);
         //printf("state: %d\n", state);
-        
+        //cout << "FLAT INDEX: " << flatIndex(state, symbol, machine, numStates, NUM_SYMBOLS) << endl;
         state = transitions[flatIndex(state, symbol, machine, numStates, NUM_SYMBOLS)];
         
         //printf("next state: %d\n", state);
