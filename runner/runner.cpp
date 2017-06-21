@@ -23,12 +23,12 @@ uint32_t rnd_function()
  
 void usage() {
 
-    cout << "USAGE: <machines> <states> <reconThresh> <permthresh> <permwidth> <stride> <bits per symbol> <seed> <crushtype 1|2|3> <fixed symbol stride (-1 to disable)>" << endl;
+    cout << "USAGE: <machines> <states> <reconThresh> <permthresh> <permwidth> <stride> <bits per symbol> <seed> <crushtype 1|2|3> <fixed symbol stride (-1 to disable)> <pipelined 0|1>" << endl;
 }
 
 int main (int argc, char * argv[])
 {
-    if(argc != 11) {
+    if(argc != 12) {
         usage();
         exit(1);
     }
@@ -44,11 +44,12 @@ int main (int argc, char * argv[])
     int seed = stoi(argv[8]);
     int crushtype = stoi(argv[9]);
     int fixedSymbolStride = stoi(argv[10]);
+    uint32_t concurrentExec = stoi(argv[11]);
     //char * outfile = argv[8];
     //char * tablefile = argv[9];
     char * outfile = "out.txt";
     char * tablefile = "table.txt";
-
+    
     // Configuration output
     printf("Starting APPRNG simulation with the following configuration:\n");
     printf("Machines: %d\n", machines);
@@ -61,6 +62,7 @@ int main (int argc, char * argv[])
     printf("PRNG seed: %d\n", seed);
     printf("Crush type (1 small|2 medium|3 big): %d\n", crushtype);
     printf("Fixed symbol stride (-1 is disabled): %d\n", fixedSymbolStride);
+    printf("Pipelined (0|1): %d\n", concurrentExec);
     
     engine = new FiniteStatePRNG(machines,
                                  states,
@@ -71,6 +73,7 @@ int main (int argc, char * argv[])
                                  stride,
                                  bitsPerSymbol,
                                  fixedSymbolStride,
+                                 concurrentExec,
                                  outfile,
                                  tablefile);
         

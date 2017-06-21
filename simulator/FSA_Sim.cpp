@@ -14,6 +14,7 @@ FiniteStatePRNG::FiniteStatePRNG(int machines,
                                  uint32_t stride_param,
                                  uint32_t bitsPerSymbol_param,
                                  int fixedSymbolStride_param,
+                                 uint32_t concurrentExec_param,
                                  const char * outfn,
                                  const char * transfn)
     : stage()
@@ -77,6 +78,16 @@ FiniteStatePRNG::FiniteStatePRNG(int machines,
     randomByteCounter = 0;
     holderRandomInt = CPURandomInt();
     
+    // concurrent execution setup
+    concurrentExec = concurrentExec_param;
+    // if we support concurrent execution, we need another state vector
+    if(concurrentExec){
+        // initialize all start2 states to be 0
+        states2 = new uint32_t[numMachines];
+        for(int i = 0; i < numMachines; i++) {
+            states2[i] = 0;
+        }
+    }
     
     // create transitions
     createTransitions();
@@ -535,9 +546,8 @@ void FiniteStatePRNG::stepPermute()
     // 
     uint32_t symbol = 0;
 
+    //
     symbol = APGetNextStridedSymbol();
-    //symbol = APGetNextSymbol();
-    //symbol = CPURandomInt(NUM_SYMBOLS);
     
     int machine = 0;
     int machine_tmp = 0;
@@ -546,7 +556,19 @@ void FiniteStatePRNG::stepPermute()
         // fetch "effective machine" based on one 
         //   level of indirection based on permutation array
         machine = permutation[machine_tmp];
-        uint32_t state = states[machine];
+
+        uint32_t state;
+        // if we're pipelining computation
+        if(concurrentExec){
+            // if odd, use alternate state vector
+            if(steps & 1){
+                state = states2[machine]; 
+            }else{
+                state = states[machine];
+            }
+        }else{
+            state = states[machine]; 
+        }
 
         //printf("symbol: %d\n", symbol);
         //printf("machine: %d\n", machine);
@@ -556,8 +578,18 @@ void FiniteStatePRNG::stepPermute()
         
         //printf("next state: %d\n", state);
         stage.push((uint32_t)(state));        
-    
-        states[machine] = state;
+
+        // if we're pipelining computation
+        if(concurrentExec){
+            // if odd, use alternate state vector
+            if(steps & 1){
+                states2[machine] = state;
+            }else{
+                states[machine] = state;
+            }
+        }else{
+            states[machine] = state;
+        }
     }
 
     steps++;

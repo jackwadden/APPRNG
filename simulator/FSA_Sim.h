@@ -61,6 +61,7 @@ public:
                     uint32_t stride,
                     uint32_t bitsPerSymbol,
                     int fixedSymbolStride,
+                    uint32_t concurrentExec,
                     const char * outfn, 
                     const char *  transfn);
     ~FiniteStatePRNG();
@@ -92,6 +93,9 @@ private:
     int symbolStrideCounter;
     unsigned int holderRandomInt;
     unsigned int randomByteCounter;
+
+    // Variables to support concurrent alternating "pipelined" execution
+    uint32_t concurrentExec;
     
     int seed;
     CBRNG::ctr_type ctr;
@@ -102,6 +106,7 @@ private:
     uint32_t * transitions;
     uint32_t * transitions2;
     uint32_t * states;
+    uint32_t * states2;
     queue<uint32_t> stage; //bytes with bits that can be converted to output
     uint32_t * pstage;
     int pstageCounter; // number of 32bit integers in pstage
