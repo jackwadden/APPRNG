@@ -16,7 +16,7 @@ TestU01 must first be compiled into a dynamically linkable library before the AP
 `make`  
 `make install`  
 
-Once TestU01 is built, you must add APPRNG/stats_tests/TestU01-1.2.3/build/lib to your LD_LIBRARY_PATH
+Once TestU01 is built, you must add <exact-path-to>/APPRNG/stats_tests/TestU01-1.2.3/build/lib to your LD_LIBRARY_PATH
 
 ### Experiment Runner
 To compile the simulator, and the runner program, you should be able to run the makefile in APPRNG/runner. You may have to change the paths in this file (see Random123 above) to get code to successfully compile.
