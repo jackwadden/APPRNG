@@ -23,12 +23,12 @@ uint32_t rnd_function()
  
 void usage() {
 
-    cout << "USAGE: <machines> <states> <reconThresh> <permthresh> <permwidth> <seed> <crushtype 1|2|3> <fixedSymbolStride (-1 to disable)>" << endl;
+    cout << "USAGE: <machines> <states> <reconThresh> <permthresh> <permwidth> <stride> <bits per symbol> <seed> <crushtype 1|2|3> <fixed symbol stride (-1 to disable)>" << endl;
 }
 
 int main (int argc, char * argv[])
 {
-    if(argc != 9) {
+    if(argc != 11) {
         usage();
         exit(1);
     }
@@ -38,17 +38,30 @@ int main (int argc, char * argv[])
     int reconThresh = stoi(argv[3]);
     int permThresh = stoi(argv[4]);
     int permWidth = stoi(argv[5]);
-    uint32_t stride = 2;
-    uint32_t bitsPerSymbol = 4;
+    uint32_t stride = stoi(argv[6]);
+    uint32_t bitsPerSymbol = stoi(argv[7]);
 
-    int seed = stoi(argv[6]);
-    int crushtype = stoi(argv[7]);
-    int fixedSymbolStride = stoi(argv[8]);
+    int seed = stoi(argv[8]);
+    int crushtype = stoi(argv[9]);
+    int fixedSymbolStride = stoi(argv[10]);
     //char * outfile = argv[8];
     //char * tablefile = argv[9];
     char * outfile = "out.txt";
     char * tablefile = "table.txt";
 
+    // Configuration output
+    printf("Starting APPRNG simulation with the following configuration:\n");
+    printf("Machines: %d\n", machines);
+    printf("States per machine: %d\n", states);
+    printf("Reconfiguration Threshold: %d\n", reconThresh);
+    printf("Permutation Threshold: %d\n", permThresh);
+    printf("Permutation width (bits): %d\n", permWidth);
+    printf("Symbols per strided symbol: %d\n", stride);
+    printf("Bits per symbol: %d\n", bitsPerSymbol);
+    printf("PRNG seed: %d\n", seed);
+    printf("Crush type (1 small|2 medium|3 big): %d\n", crushtype);
+    printf("Fixed symbol stride (-1 is disabled): %d\n", fixedSymbolStride);
+    
     engine = new FiniteStatePRNG(machines,
                                  states,
                                  reconThresh,
