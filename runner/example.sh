@@ -1,5 +1,5 @@
 #!/bin/bash
-#USAGE: <machines> <states> <reconThresh> <permthresh> <permwidth> <symbol stride> <bits per symbol> <seed> <crushtype 1|2|3> <fixedSymbolStride (-1 to disable)>
+#USAGE: <machines> <states> <reconThresh> <permthresh> <permwidth> <symbol stride> <bits per symbol> <seed> <crushtype 1|2|3> <fixedSymbolStride (-1 to disable)> <pipelined 0|1>
 MACHINES=571
 STATES=8
 RECON_T=200000
