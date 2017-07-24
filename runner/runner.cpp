@@ -47,9 +47,9 @@ int main (int argc, char * argv[])
     uint32_t concurrentExec = stoi(argv[11]);
     //char * outfile = argv[8];
     //char * tablefile = argv[9];
-    char * outfile = "out.txt";
-    char * tablefile = "table.txt";
-    
+    char const * outfile = "out.txt"; //added const for c++11 support
+    char const * tablefile = "table.txt";//added const for c++11 support
+    cout <<"Sup yo";
     // Configuration output
     printf("Starting APPRNG simulation with the following configuration:\n");
     printf("Machines: %d\n", machines);

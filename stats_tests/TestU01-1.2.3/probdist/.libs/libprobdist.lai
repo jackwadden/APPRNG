@@ -14,7 +14,7 @@ library_names='libprobdist.so.0.0.1 libprobdist.so.0 libprobdist.so'
 old_library='libprobdist.a'
 
 # Libraries that this one depends upon.
-dependency_libs=' /af5/jpw8bd/r/automata/APPRNG/MarkovChainPRNG/stats_tests/TestU01-1.2.3/build/lib/libmylib.la -lm'
+dependency_libs=' /home/mw223/Desktop/apprng/APPRNG/stats_tests/TestU01-1.2.3/build/lib/libmylib.la -lm'
 
 # Version information for libprobdist.
 current=0
@@ -32,4 +32,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/af5/jpw8bd/r/automata/APPRNG/MarkovChainPRNG/stats_tests/TestU01-1.2.3/build/lib'
+libdir='/home/mw223/Desktop/apprng/APPRNG/stats_tests/TestU01-1.2.3/build/lib'

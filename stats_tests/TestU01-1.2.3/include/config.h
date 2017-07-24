@@ -8,7 +8,7 @@
 #define HAVE_ERF 1
 
 /* Define to 1 if you have the <gmp.h> header file. */
-#define HAVE_GMP_H 1
+/* #undef HAVE_GMP_H */
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #define HAVE_INTTYPES_H 1
@@ -23,7 +23,7 @@
 #define HAVE_LONG_LONG 1
 
 /* Define when Mathematica is installed */
-#define HAVE_MATHEMATICA 1
+/* #undef HAVE_MATHEMATICA */
 
 /* Define to 1 if you have the <memory.h> header file. */
 #define HAVE_MEMORY_H 1
