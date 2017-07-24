@@ -13,9 +13,9 @@
 
 #define HAVE_LGAMMA 1
 
-#define HAVE_GMP_H 1
+/* #undef HAVE_GMP_H */
 
-#define HAVE_MATHEMATICA 1
+/* #undef HAVE_MATHEMATICA */
 
 #define HAVE_SYS_UTSNAME_H 1
 

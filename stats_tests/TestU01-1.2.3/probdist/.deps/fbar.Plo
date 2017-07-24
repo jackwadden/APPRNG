@@ -1,7 +1,7 @@
 fbar.lo: fbar.c /usr/include/stdc-predef.h ../include/fbar.h \
  ../include/gdef.h ../include/gdefconf.h \
- /usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed/limits.h \
- /usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed/syslimits.h \
+ /usr/lib/gcc/x86_64-linux-gnu/6/include-fixed/limits.h \
+ /usr/lib/gcc/x86_64-linux-gnu/6/include-fixed/syslimits.h \
  /usr/include/limits.h /usr/include/features.h \
  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -11,10 +11,12 @@ fbar.lo: fbar.c /usr/include/stdc-predef.h ../include/fbar.h \
  /usr/include/x86_64-linux-gnu/bits/local_lim.h \
  /usr/include/linux/limits.h \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
- /usr/lib/gcc/x86_64-linux-gnu/4.9/include/stdint.h /usr/include/stdint.h \
+ /usr/lib/gcc/x86_64-linux-gnu/6/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/wchar.h ../include/fmass.h \
  ../include/fdist.h ../include/num.h ../include/num2.h \
- /usr/include/math.h /usr/include/x86_64-linux-gnu/bits/huge_val.h \
+ /usr/include/math.h /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+ /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_val.h \
  /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
  /usr/include/x86_64-linux-gnu/bits/huge_vall.h \
  /usr/include/x86_64-linux-gnu/bits/inf.h \
@@ -22,21 +24,21 @@ fbar.lo: fbar.c /usr/include/stdc-predef.h ../include/fbar.h \
  /usr/include/x86_64-linux-gnu/bits/mathdef.h \
  /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
  /usr/include/x86_64-linux-gnu/bits/mathinline.h ../include/util.h \
- /usr/include/stdio.h /usr/lib/gcc/x86_64-linux-gnu/4.9/include/stddef.h \
+ /usr/include/stdio.h /usr/lib/gcc/x86_64-linux-gnu/6/include/stddef.h \
  /usr/include/x86_64-linux-gnu/bits/types.h \
  /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
  /usr/include/_G_config.h /usr/include/wchar.h \
- /usr/lib/gcc/x86_64-linux-gnu/4.9/include/stdarg.h \
+ /usr/lib/gcc/x86_64-linux-gnu/6/include/stdarg.h \
  /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
  /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
  /usr/include/x86_64-linux-gnu/bits/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/stdio2.h /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/waitflags.h \
- /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
- /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/endian.h /usr/include/x86_64-linux-gnu/bits/endian.h \
  /usr/include/x86_64-linux-gnu/bits/byteswap.h \
  /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
- /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
  /usr/include/x86_64-linux-gnu/sys/select.h \
  /usr/include/x86_64-linux-gnu/bits/select.h \
  /usr/include/x86_64-linux-gnu/bits/sigset.h \
@@ -47,7 +49,7 @@ fbar.lo: fbar.c /usr/include/stdc-predef.h ../include/fbar.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib.h ../include/gdef.h \
- /usr/lib/gcc/x86_64-linux-gnu/4.9/include/float.h
+ /usr/lib/gcc/x86_64-linux-gnu/6/include/float.h
 
 /usr/include/stdc-predef.h:
 
@@ -57,9 +59,9 @@ fbar.lo: fbar.c /usr/include/stdc-predef.h ../include/fbar.h \
 
 ../include/gdefconf.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed/limits.h:
+/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed/limits.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed/syslimits.h:
+/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed/syslimits.h:
 
 /usr/include/limits.h:
 
@@ -81,7 +83,7 @@ fbar.lo: fbar.c /usr/include/stdc-predef.h ../include/fbar.h \
 
 /usr/include/x86_64-linux-gnu/bits/posix2_lim.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/4.9/include/stdint.h:
+/usr/lib/gcc/x86_64-linux-gnu/6/include/stdint.h:
 
 /usr/include/stdint.h:
 
@@ -96,6 +98,10 @@ fbar.lo: fbar.c /usr/include/stdc-predef.h ../include/fbar.h \
 ../include/num2.h:
 
 /usr/include/math.h:
+
+/usr/include/x86_64-linux-gnu/bits/math-vector.h:
+
+/usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h:
 
 /usr/include/x86_64-linux-gnu/bits/huge_val.h:
 
@@ -117,7 +123,7 @@ fbar.lo: fbar.c /usr/include/stdc-predef.h ../include/fbar.h \
 
 /usr/include/stdio.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/4.9/include/stddef.h:
+/usr/lib/gcc/x86_64-linux-gnu/6/include/stddef.h:
 
 /usr/include/x86_64-linux-gnu/bits/types.h:
 
@@ -129,7 +135,7 @@ fbar.lo: fbar.c /usr/include/stdc-predef.h ../include/fbar.h \
 
 /usr/include/wchar.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/4.9/include/stdarg.h:
+/usr/lib/gcc/x86_64-linux-gnu/6/include/stdarg.h:
 
 /usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
 
@@ -145,6 +151,10 @@ fbar.lo: fbar.c /usr/include/stdc-predef.h ../include/fbar.h \
 
 /usr/include/x86_64-linux-gnu/bits/waitstatus.h:
 
+/usr/include/x86_64-linux-gnu/sys/types.h:
+
+/usr/include/time.h:
+
 /usr/include/endian.h:
 
 /usr/include/x86_64-linux-gnu/bits/endian.h:
@@ -152,10 +162,6 @@ fbar.lo: fbar.c /usr/include/stdc-predef.h ../include/fbar.h \
 /usr/include/x86_64-linux-gnu/bits/byteswap.h:
 
 /usr/include/x86_64-linux-gnu/bits/byteswap-16.h:
-
-/usr/include/x86_64-linux-gnu/sys/types.h:
-
-/usr/include/time.h:
 
 /usr/include/x86_64-linux-gnu/sys/select.h:
 
@@ -181,4 +187,4 @@ fbar.lo: fbar.c /usr/include/stdc-predef.h ../include/fbar.h \
 
 ../include/gdef.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/4.9/include/float.h:
+/usr/lib/gcc/x86_64-linux-gnu/6/include/float.h:

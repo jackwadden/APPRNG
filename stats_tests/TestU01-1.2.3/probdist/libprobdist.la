@@ -14,7 +14,7 @@ library_names='libprobdist.so.0.0.1 libprobdist.so.0 libprobdist.so'
 old_library='libprobdist.a'
 
 # Libraries that this one depends upon.
-dependency_libs=' /af5/jpw8bd/r/automata/APPRNG/MarkovChainPRNG/stats_tests/TestU01-1.2.3/mylib/libmylib.la -lm'
+dependency_libs=' /home/mw223/Desktop/apprng/APPRNG/stats_tests/TestU01-1.2.3/mylib/libmylib.la -lm'
 
 # Version information for libprobdist.
 current=0
@@ -32,5 +32,5 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/af5/jpw8bd/r/automata/APPRNG/MarkovChainPRNG/stats_tests/TestU01-1.2.3/build/lib'
-relink_command="(cd /af5/jpw8bd/r/automata/APPRNG/MarkovChainPRNG/stats_tests/TestU01-1.2.3/probdist; /bin/sh ../libtool  --tag=CC --mode=relink gcc -g -O2 -no-undefined -version-info 0:1:0 -o libprobdist.la -rpath /af5/jpw8bd/r/automata/APPRNG/MarkovChainPRNG/stats_tests/TestU01-1.2.3/build/lib fmass.lo fdist.lo fbar.lo finv.lo gofs.lo gofw.lo statcoll.lo wdist.lo ../mylib/libmylib.la -lm @inst_prefix_dir@) "
+libdir='/home/mw223/Desktop/apprng/APPRNG/stats_tests/TestU01-1.2.3/build/lib'
+relink_command="(cd /home/mw223/Desktop/apprng/APPRNG/stats_tests/TestU01-1.2.3/probdist; /bin/bash ../libtool  --tag=CC --mode=relink gcc -g -O2 -no-undefined -version-info 0:1:0 -o libprobdist.la -rpath /home/mw223/Desktop/apprng/APPRNG/stats_tests/TestU01-1.2.3/build/lib fmass.lo fdist.lo fbar.lo finv.lo gofs.lo gofw.lo statcoll.lo wdist.lo ../mylib/libmylib.la -lm @inst_prefix_dir@) "
