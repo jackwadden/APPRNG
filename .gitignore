@@ -1,4 +1,3 @@
 runner/runner
 simulator/Makefile
-stats_tests/TestU01-1.2.3/build/
-stats_tests/TestU01.zip
+stats_tests/TestU01-1.2.3/*
