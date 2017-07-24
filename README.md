@@ -10,9 +10,9 @@ Random123 does not require compilation, but you will need to tell runner/Makefil
 ### TESTU01 (statistical test battery)
 TestU01 must first be compiled into a dynamically linkable library before the AP PRNG simulator can be run against the tests. Follow the steps below to compile TestU01.
 
-`cd stats_tests/`
-`unzip TestU01.zip`
-`cd TestU01-1.2.3`
+`cd stats_tests/`  
+`unzip TestU01.zip`  
+`cd TestU01-1.2.3`  
 `mkdir build`  
 `./configure --prefix=<absolute path to build dir>`  
 `make`  
