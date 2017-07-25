@@ -8,12 +8,14 @@ Random123 does not require compilation, but you will need to tell the runner/Mak
 
 ### **II. Configure TESTU01 (statistical test battery)**
 
-TestU01 must first be compiled into a dynamically linkable library before the AP PRNG simulator can be run against the tests. Follow the steps below to compile TestU01(Assuming that you.
+TestU01 must first be compiled into a dynamically linkable library before the AP PRNG simulator can be run against the tests. Follow the steps below to compile TestU01(Assuming that you are in the APPRNG directory).
+```
 cd stats_tests/TestU01-1.2.3
 mkdir build
 ./configure --prefix=<absolute path to build dir>
 make
 make install
+```
 Once TestU01 is built, you must add <exact-path-to>/APPRNG/stats_tests/TestU01-1.2.3/build/lib to your LD_LIBRARY_PATH with the command-line. Do this with the following line:
 ```
 $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:<full_path_here>
