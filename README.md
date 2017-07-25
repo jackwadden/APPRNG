@@ -11,6 +11,8 @@ Random123 does not require compilation, but you will need to tell the runner/Mak
 TestU01 must first be compiled into a dynamically linkable library before the AP PRNG simulator can be run against the tests. Follow the steps below to compile TestU01(Assuming that you are in the APPRNG directory).
 ```
 cd stats_tests/TestU01-1.2.3
+unzip TestU01.zip
+cd TestU01-1.2.3
 mkdir build
 ./configure --prefix=<absolute path to build dir>
 make
